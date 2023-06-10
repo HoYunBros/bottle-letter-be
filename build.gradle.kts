@@ -9,6 +9,9 @@ plugins {
 
     // ktlint-gradle 적용
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
+
+    // Rest docs
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
 }
 
 group = "io.ggam-nyang"
@@ -30,7 +33,7 @@ dependencies {
     implementation("com.h2database:h2")
 
     // mysql driver
-    implementation("mysql:mysql-connector-java:8.0.32")
+    implementation("mysql:mysql-connector-java:8.0.33")
 
     // Spring Security
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -43,6 +46,13 @@ dependencies {
 
     // mockito kotlin
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+
+    // Kotest
+//    testImplementation("io.kotest:kotest-runner-junit5:$version")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.5")
+
+    // Spring Rest docs
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 }
 
 tasks.withType<KotlinCompile> {
@@ -54,4 +64,41 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val asciidoctorExt: Configuration by configurations.creating
+dependencies {
+    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
+}
+
+val snippetsDir by extra { file("build/generated-snippets") }
+
+tasks.test {
+    outputs.dir(snippetsDir)
+}
+
+tasks.asciidoctor {
+    inputs.dir(snippetsDir)
+    configurations(asciidoctorExt.name)
+    dependsOn(tasks.test)
+    doFirst {
+        delete {
+            file("src/main/resources/static/docs")
+        }
+    }
+}
+
+tasks.register("copyHTML", Copy::class) {
+    dependsOn(tasks.asciidoctor)
+    from(file("build/docs/asciidoc"))
+    into(file("src/main/resources/static/docs"))
+}
+
+tasks.build {
+    dependsOn(tasks.getByName("copyHTML"))
+}
+
+tasks.bootJar {
+    dependsOn(tasks.asciidoctor)
+    dependsOn(tasks.getByName("copyHTML"))
 }

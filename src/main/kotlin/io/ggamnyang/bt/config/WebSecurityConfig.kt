@@ -26,6 +26,7 @@ class WebSecurityConfig(
             .authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(
+                        "docs/**",
                         "/api/v1/users/login",
                         "/api/v1/users"
                     ).permitAll()

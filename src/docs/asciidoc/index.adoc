@@ -1,0 +1,147 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+= API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+[[introduction]]
+== 소개
+
+Bottle Letter API
+
+[[common]]
+== 공통 사항
+
+모든 API path는 /api/{version} 으로 시작합니다.
+
+=== Domain
+
+|===
+| 환경 | Domain
+
+| 개발서버
+| `http://docs.api.com:8080`
+
+| 운영서버
+| `https://docs.api.com`
+|===
+
+&#160;
+
+== Users
+
+[[login]]
+=== login
+POST /api/v1/users/login
+
+==== Request
+
+include::{snippets}/login/request-fields.adoc[]
+
+===== Request HTTP Example
+
+include::{snippets}/login/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/login/response-fields.adoc[]
+
+===== Response HTTP Example
+
+include::{snippets}/login/http-response.adoc[]
+
+&#160;
+
+[[sign-up]]
+=== signUp
+POST /api/v1/users
+
+==== Request
+
+include::{snippets}/signUp/request-fields.adoc[]
+
+===== Request HTTP Example
+
+include::{snippets}/signUp/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/signUp/response-fields.adoc[]
+
+===== Response HTTP Example
+
+include::{snippets}/signUp/http-response.adoc[]
+
+&#160;
+
+[[me]]
+=== me
+GET /api/v1/users/me
+
+==== Request
+
+===== Request HTTP Example
+
+include::{snippets}/get-me/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/get-me/response-fields.adoc[]
+
+===== Response HTTP Example
+
+include::{snippets}/get-me/http-response.adoc[]
+
+&#160;
+
+== Bottles
+
+[[get-bottles]]
+=== get-bottles
+GET /api/v1/bottles
+
+==== Request
+
+include::{snippets}/get-bottles/query-parameters.adoc[]
+
+===== Request HTTP Example
+
+include::{snippets}/get-bottles/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/get-bottles/response-fields.adoc[]
+
+===== Response HTTP Example
+
+include::{snippets}/get-bottles/http-response.adoc[]
+
+&#160;
+
+[[post-bottles]]
+=== post-bottles
+POST /api/v1/bottles
+
+==== Request
+
+include::{snippets}/post-bottles/request-fields.adoc[]
+
+===== Request HTTP Example
+
+include::{snippets}/post-bottles/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post-bottles/response-fields.adoc[]
+
+===== Response HTTP Example
+
+include::{snippets}/post-bottles/http-response.adoc[]
+
+&#160;

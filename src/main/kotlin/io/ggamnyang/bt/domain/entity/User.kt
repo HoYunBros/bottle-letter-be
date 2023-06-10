@@ -1,6 +1,7 @@
 package io.ggamnyang.bt.domain.entity
 
 import io.ggamnyang.bt.dto.common.LoginDto
+import io.ggamnyang.bt.dto.common.UserDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
@@ -21,6 +22,8 @@ class User(
     val receivedBottles: List<Bottle> = arrayListOf()
 
 ) : Base() {
+
+    fun toUserDto() = UserDto(this.username)
 
     companion object {
         fun fromLoginDto(loginDto: LoginDto): User = User(loginDto.username, loginDto.password)

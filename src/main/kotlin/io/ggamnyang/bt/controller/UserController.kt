@@ -1,7 +1,8 @@
 package io.ggamnyang.bt.controller
 
-import io.ggamnyang.bt.domain.entity.User
 import io.ggamnyang.bt.dto.common.LoginDto
+import io.ggamnyang.bt.dto.common.UserDto
+import io.ggamnyang.bt.dto.response.LoginResponse
 import io.ggamnyang.bt.service.UserService
 import io.ggamnyang.bt.service.userdetail.UserDetailsAdapter
 import org.slf4j.LoggerFactory
@@ -21,25 +22,25 @@ class UserController(
     @PostMapping
     fun signUp(
         @RequestBody loginDto: LoginDto
-    ): ResponseEntity<User> {
+    ): ResponseEntity<UserDto> {
         if (userService.findByUsername(loginDto.username) != null) {
             throw DataIntegrityViolationException("Unique Column. ${loginDto.username} is existed")
         }
 
-        return ResponseEntity(userService.save(loginDto), HttpStatus.CREATED)
+        return ResponseEntity(userService.save(loginDto).toUserDto(), HttpStatus.CREATED)
     }
 
     @PostMapping("/login")
     fun login(
         @RequestBody loginDto: LoginDto
-    ): ResponseEntity<String> {
-        return ResponseEntity(userService.login(loginDto), HttpStatus.OK)
+    ): ResponseEntity<LoginResponse> {
+        return ResponseEntity(LoginResponse(userService.login(loginDto)), HttpStatus.OK)
     }
 
     @GetMapping("/me")
     fun getMe(
-        @AuthenticationPrincipal userAdapter: UserDetailsAdapter // FIXME: 재고
-    ): ResponseEntity<User> { // FIXME: have to return UserDto
-        return ResponseEntity(userAdapter.user, HttpStatus.OK)
+        @AuthenticationPrincipal userAdapter: UserDetailsAdapter
+    ): ResponseEntity<UserDto> {
+        return ResponseEntity(userAdapter.user.toUserDto(), HttpStatus.OK)
     }
 }

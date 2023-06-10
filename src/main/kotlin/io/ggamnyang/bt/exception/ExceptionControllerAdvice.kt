@@ -10,12 +10,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ExceptionControllerAdvice {
 
     @ExceptionHandler
-    fun dataIntegrityViolationException(ex: DataIntegrityViolationException): ResponseEntity<ErrorMessageModel> {
+    fun dataIntegrityViolationException(e: DataIntegrityViolationException): ResponseEntity<ErrorMessageModel> {
         val errorMessage = ErrorMessageModel(
             HttpStatus.BAD_REQUEST.value(),
-            ex.message
+            e.message
         )
 
         return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler
+    fun userNotFoundException(e: UserNotFoundException): ResponseEntity<ErrorMessageModel> {
+        val errorMessage = ErrorMessageModel(
+            HttpStatus.NOT_FOUND.value(),
+            e.message
+        )
+
+        return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
     }
 }
